@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class CanvasManager : MonoBehaviour
 {
@@ -10,11 +12,19 @@ public class CanvasManager : MonoBehaviour
     GameObject PausePanel;
     GameObject GameOverPanel;
     GameObject WinGamePanel;
+
+    public GameObject KeyImage;
     // Start is called before the first frame update
     void Start()
     {
         getObjects();
         SetMenuActive();
+        SetItemsOnScreen();
+    }
+
+    public void SetItemsOnScreen()
+    {
+        KeyImage.SetActive(false);
     }
 
     private void getObjects()
@@ -24,6 +34,7 @@ public class CanvasManager : MonoBehaviour
         PausePanel = GameObject.Find("PausePanel");
         GameOverPanel = GameObject.Find("GameOverPanel");
         WinGamePanel = GameObject.Find("WinGamePanel");
+        KeyImage = GameObject.Find("KeyImage");
     }
 
     // Update is called once per frame
@@ -72,6 +83,7 @@ public class CanvasManager : MonoBehaviour
         PausePanel.SetActive(false);
         GameOverPanel.SetActive(true);
         WinGamePanel.SetActive(false);
+        MainManager.GameManager.GameOver();
     }
     public void SetWinGameActive()
     {
@@ -80,6 +92,7 @@ public class CanvasManager : MonoBehaviour
         PausePanel.SetActive(false);
         GameOverPanel.SetActive(false);
         WinGamePanel.SetActive(true);
+        MainManager.GameManager.WinGame();
     }
     public void ExitGame()
     {

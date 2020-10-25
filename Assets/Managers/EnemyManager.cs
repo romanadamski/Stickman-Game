@@ -32,7 +32,7 @@ public class EnemyManager : MonoBehaviour
         DefaultEnemyPosition = transform.localPosition;
         SetDirections();
     }
-
+    //todo zatrzymuje sie
     // Update is called once per frame
     void Update()
     {

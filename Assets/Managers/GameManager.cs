@@ -29,11 +29,13 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
-        GameMode = GameModeEnum.GAME;
         ResetGame();
         MainManager.GameManager.IsKeyAchieved = false;
-        MainManager.GameManager.AreDoorsAchieved = false;
+        AreDoorsAchieved = false;
+        AreDoorsAchieved = false;
+        MainManager.CanvasManager.SetItemsOnScreen();
         StartCoroutines();
+        GameMode = GameModeEnum.GAME;
     }
 
     private void StartCoroutines()
@@ -59,25 +61,26 @@ public class GameManager : MonoBehaviour
     private IEnumerator waitForDoorsToGet()
     {
         yield return new WaitUntil(() => AreDoorsAchieved);
-        WinGame();
+        MainManager.CanvasManager.SetWinGameActive();
     }
 
-    private void WinGame()
+    public void WinGame()
     {
+        StopMovingObjects();
         GameMode = GameModeEnum.WIN_GAME;
-        MainManager.CanvasManager.SetWinGameActive();
     }
 
     private IEnumerator waitForKeyToGet()
     {
         yield return new WaitUntil(() => IsKeyAchieved);
         showDoors();
+        MainManager.CanvasManager.KeyImage.SetActive(true);
     }
 
     public void GoToMainMenu()
     {
-        GameMode = GameModeEnum.MAIN_MENU;
         StopMovingObjects();
+        GameMode = GameModeEnum.MAIN_MENU;
     }
     public void ResetGame()
     {
@@ -110,22 +113,22 @@ public class GameManager : MonoBehaviour
 
     internal void GameOver()
     {
-        GameMode = GameModeEnum.GAME_OVER;
         StopMovingObjects();
-        MainManager.PlayerManager.GetComponent<PlayerManager>().ResetRotationAndPosition();
-        MainManager.CanvasManager.SetGameOverActive();
+        MainManager.PlayerManager.SetPlayerFreeze();
+        GameMode = GameModeEnum.GAME_OVER;
     }
 
     public void PauseGame()
     {
-        GameMode = GameModeEnum.PAUSE;
         StopMovingObjects();
+        GameMode = GameModeEnum.PAUSE;
     }
 
     private void StopMovingObjects()
     {
         MainManager.ElevatorManager.MoveSpeed = 0;
         MainManager.ElevatorManager.CanElevatorMove = false;
+        MainManager.PlayerManager.SetPlayerFreeze();
         foreach (var enemy in MainManager.MainEnemyManager.Enemies)
         {
             enemy.GetComponent<EnemyManager>().MoveSpeed = 0;
@@ -135,17 +138,19 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        GameMode = GameModeEnum.GAME;
         startMovingObjects();
+        GameMode = GameModeEnum.GAME;
     }
 
     private void startMovingObjects()
     {
+        MainManager.PlayerManager.SetPlayerMoving();
         MainManager.ElevatorManager.MoveSpeed = MainManager.ElevatorManager.DefaultElevatorSpeed;
         MainManager.ElevatorManager.CanElevatorMove = true;
         foreach (var enemy in MainManager.MainEnemyManager.Enemies)
         {
             enemy.GetComponent<EnemyManager>().MoveSpeed = MainManager.MainEnemyManager.DefaultEnemySpeed;
+            enemy.GetComponent<Animator>().enabled = true;
         }
     }
 }

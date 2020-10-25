@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour {
-    Animator anim;
+    Animator animator;
     Rigidbody2D rigidbody2d;
     public Transform groundCheck;
     public float groundCheckRadius;
@@ -22,7 +22,7 @@ public class PlayerManager : MonoBehaviour {
     public Vector2 DefaultPlayerPosition;
 
     void Start() {
-        anim = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         rigidbody2d = GetComponent<Rigidbody2D>();
         SetDirections();
         jumps = maxJumps;
@@ -38,6 +38,8 @@ public class PlayerManager : MonoBehaviour {
     }
     void FixedUpdate()
     {
+        if (MainManager.GameManager.GameMode != Assets.GameModeEnum.GAME)
+            return;
         Destroy(GetComponent<PolygonCollider2D>());
         gameObject.AddComponent<PolygonCollider2D>();
         if (rigidbody2d.velocity.magnitude < .01)
@@ -47,7 +49,7 @@ public class PlayerManager : MonoBehaviour {
     }
     void gameOver()
     {
-        MainManager.GameManager.GameOver();
+        MainManager.CanvasManager.SetGameOverActive();
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -61,16 +63,24 @@ public class PlayerManager : MonoBehaviour {
         transform.localPosition = DefaultPlayerPosition;
         transform.rotation = turnRight;
     }
+    public void SetPlayerFreeze()
+    {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        if(animator != null)
+            animator.enabled = false;
+    }
+    public void SetPlayerMoving()
+    {
+        GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        animator.enabled = true;
+    }
     // Update is called once per frame
     void Update() {
-        //todo rusza sie jak jest pauza
-        //todo wyglad i uklad mapy
-        //todo ikonka klucza
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, WhatIsGround);
         if (grounded)
             jumps = maxJumps;
-        anim.SetFloat("Speed", Mathf.Abs(rigidbody2d.velocity.x));
-        anim.SetBool("Grounded", grounded);
+        animator.SetFloat("Speed", Mathf.Abs(rigidbody2d.velocity.x));
+        animator.SetBool("Grounded", grounded);
 
         if (MainManager.GameManager.GameMode != Assets.GameModeEnum.GAME)
             return;
