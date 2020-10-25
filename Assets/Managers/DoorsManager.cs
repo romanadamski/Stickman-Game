@@ -17,7 +17,7 @@ public class DoorsManager : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             MainManager.GameManager.AreDoorsAchieved = true;
         }

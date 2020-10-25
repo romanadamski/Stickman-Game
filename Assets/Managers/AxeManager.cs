@@ -10,7 +10,6 @@ public class AxeManager : MonoBehaviour
     Vector2 startPosition;
     int direction = 1;
     public int MaxDistance;
-    Quaternion turnRight;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +21,6 @@ public class AxeManager : MonoBehaviour
     {
         Vector3 rot = transform.rotation.eulerAngles;
         rot = new Vector3(rot.x + 180, rot.y, rot.z);
-        turnRight = Quaternion.Euler(rot);
     }
 
     // Update is called once per frame
@@ -43,7 +41,7 @@ public class AxeManager : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.tag.Equals("Player"))
+        if (!collision.gameObject.CompareTag("Player"))
             Destroy(gameObject);
     }
 }

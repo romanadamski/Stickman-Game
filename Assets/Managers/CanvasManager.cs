@@ -16,7 +16,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject KeyImage;
     private void Awake()
     {
-        getObjects();
+        GetObjects();
     }
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,7 @@ public class CanvasManager : MonoBehaviour
         KeyImage.SetActive(false);
     }
 
-    private void getObjects()
+    private void GetObjects()
     {
         MenuPanel = GameObject.Find("MenuPanel");
         GamePanel = GameObject.Find("GamePanel");

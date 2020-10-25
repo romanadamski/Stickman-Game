@@ -18,7 +18,7 @@ public class KeyManager : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             gameObject.SetActive(false);
             MainManager.GameManager.IsKeyAchieved = true;

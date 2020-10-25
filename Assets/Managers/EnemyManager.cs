@@ -63,7 +63,7 @@ public class EnemyManager : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Axe"))
+        if (collision.gameObject.CompareTag("Axe"))
         {
             Die();
         }

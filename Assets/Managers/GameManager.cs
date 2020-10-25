@@ -53,25 +53,25 @@ public class GameManager : MonoBehaviour
 
     private void StartCoroutines()
     {
-        StartCoroutine(waitForAllEnemiesKilled());
-        StartCoroutine(waitForKeyToGet());
-        StartCoroutine(waitForDoorsToGet());
+        StartCoroutine(WaitForAllEnemiesKilled());
+        StartCoroutine(WaitForKeyToGet());
+        StartCoroutine(WaitForDoorsToGet());
     }
-    void showKey()
+    void ShowKey()
     {
         Key.SetActive(true);
     }
-    IEnumerator waitForAllEnemiesKilled()
+    IEnumerator WaitForAllEnemiesKilled()
     {
         yield return new WaitUntil(() => MainManager.MainEnemyManager.Enemies.Where(x => x.activeSelf == true).Count() == 0);
-        showKey();
+        ShowKey();
     }
-    void showDoors()
+    void ShowDoors()
     {
         Doors.SetActive(true);
     }
 
-    private IEnumerator waitForDoorsToGet()
+    private IEnumerator WaitForDoorsToGet()
     {
         yield return new WaitUntil(() => AreDoorsAchieved);
         MainManager.CanvasManager.SetWinGameActive();
@@ -83,10 +83,10 @@ public class GameManager : MonoBehaviour
         GameMode = GameModeEnum.WIN_GAME;
     }
 
-    private IEnumerator waitForKeyToGet()
+    private IEnumerator WaitForKeyToGet()
     {
         yield return new WaitUntil(() => IsKeyAchieved);
-        showDoors();
+        ShowDoors();
         MainManager.CanvasManager.KeyImage.SetActive(true);
     }
 
@@ -97,14 +97,14 @@ public class GameManager : MonoBehaviour
     }
     public void ResetGame()
     {
-        setObjectsVisiblity();
-        setDefaultPositionsForObjects();
+        SetObjectsVisiblity();
+        SetDefaultPositionsForObjects();
         MainManager.MainEnemyManager.IgnoreEnemies();
         MainManager.ElevatorManager.StopAllCoroutines();
-        startMovingObjects();
+        StartMovingObjects();
     }
 
-    private void setObjectsVisiblity()
+    private void SetObjectsVisiblity()
     {
         foreach (var enemy in MainManager.MainEnemyManager.Enemies)
         {
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
         MainManager.PlayerManager.gameObject.SetActive(true);
     }
 
-    private void setDefaultPositionsForObjects()
+    private void SetDefaultPositionsForObjects()
     {
         MainManager.PlayerManager.GetComponent<PlayerManager>().ResetRotationAndPosition();
         MainManager.ElevatorManager.transform.localPosition = MainManager.ElevatorManager.DefaultElevatorPosition;
@@ -158,11 +158,11 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
-        startMovingObjects();
+        StartMovingObjects();
         GameMode = GameModeEnum.GAME;
     }
 
-    private void startMovingObjects()
+    private void StartMovingObjects()
     {
         MainManager.PlayerManager.SetPlayerMoving();
         MainManager.ElevatorManager.MoveSpeed = MainManager.ElevatorManager.DefaultElevatorSpeed;

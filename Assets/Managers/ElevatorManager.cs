@@ -10,7 +10,7 @@ public class ElevatorManager : MonoBehaviour
     int direction = 1;
     public float MoveSpeed;
     Rigidbody2D rigidbody2d;
-    int elevatorStopTime = 2;
+    readonly int elevatorStopTime = 2;
     public bool CanElevatorMove = true;
     public float DefaultElevatorSpeed = 5;
     public Vector2 DefaultElevatorPosition;
@@ -24,19 +24,19 @@ public class ElevatorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, MoveSpeed * direction);
         if (transform.localPosition.y <= StartElevatorPosition.transform.position.y && CanElevatorMove)
         {
             direction = 1;
-            StartCoroutine(stopTheElevatorForSeconds());
+            StartCoroutine(StopTheElevatorForSeconds());
         }
         else if (transform.localPosition.y >= EndElevatoryPosition.transform.position.y && CanElevatorMove)
         {
             direction = -1;
-            StartCoroutine(stopTheElevatorForSeconds());
+            StartCoroutine(StopTheElevatorForSeconds());
         }
+        rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, MoveSpeed * direction);
     }
-    IEnumerator stopTheElevatorForSeconds()
+    IEnumerator StopTheElevatorForSeconds()
     {
         MoveSpeed = 0;
         CanElevatorMove = false;

@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Axe
   - EnemyGravestone
+  - Ground
   layers:
   - Default
   - TransparentFX

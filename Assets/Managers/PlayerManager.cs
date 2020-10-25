@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour {
     Quaternion turnRight;
     Quaternion turnLeft;
     float playerWidth;
-    float underPlatformsPosition = -6f;
+    readonly float underPlatformsPosition = -6f;
     public Vector2 DefaultPlayerPosition;
     void Start() {
         animator = GetComponent<Animator>();
@@ -46,7 +46,7 @@ public class PlayerManager : MonoBehaviour {
             rigidbody2d.velocity = Vector3.zero;
         }
     }
-    void gameOver()
+    void GameOver()
     {
         MainManager.GameManager.ShowPlayerGravestone(gameObject.transform.localPosition);
         gameObject.SetActive(false);
@@ -54,10 +54,11 @@ public class PlayerManager : MonoBehaviour {
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            gameOver();
+            GameOver();
         }
+        grounded = true;
     }
     public void ResetRotationAndPosition()
     {
@@ -85,6 +86,7 @@ public class PlayerManager : MonoBehaviour {
         }
         animator.SetFloat("Speed", Mathf.Abs(rigidbody2d.velocity.x));
         animator.SetBool("Grounded", grounded);
+        
 
         if (MainManager.GameManager.GameMode != Assets.GameModeEnum.GAME)
             return;
@@ -108,9 +110,14 @@ public class PlayerManager : MonoBehaviour {
             Shoot();
         }
         if (transform.localPosition.y < underPlatformsPosition)
-            gameOver();
+            GameOver();
         if (!Input.anyKey)
             rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x * 0.95f, rigidbody2d.velocity.y);
+    }
+    IEnumerator DecreaseJumpsAfterDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
+        jumps --;
     }
     private void Shoot()
     {
@@ -126,9 +133,10 @@ public class PlayerManager : MonoBehaviour {
     {
         if (jumps > 0)
         {
+            Debug.Log(jumps);
             grounded = false;
             rigidbody2d.velocity = new Vector2(0, jumpHeight);
-            jumps = jumps - 1;
+            StartCoroutine(DecreaseJumpsAfterDelay());
         }
         if (jumps == 0)
         {
