@@ -129,7 +129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 16
   rotateSpeed: 5
-  MaxDistance: 10
+  MaxDistance: 6
 --- !u!50 &6280303546619447109
 Rigidbody2D:
   serializedVersion: 4
