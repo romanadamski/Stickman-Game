@@ -15,9 +15,9 @@ public class MainEnemyManager : MonoBehaviour
 
     public void IgnoreEnemies()
     {
-        for(int i = 0; i < Enemies.Count - 1; i++)
+        for(int i = 0; i < Enemies.Count; i++)
         {
-            for(int j = i + 1; j < Enemies.Count; j++)
+            for(int j = 0; j < Enemies.Count; j++)
             {
                 Physics2D.IgnoreCollision(Enemies[i].GetComponent<PolygonCollider2D>(), Enemies[j].GetComponent<PolygonCollider2D>());
             }

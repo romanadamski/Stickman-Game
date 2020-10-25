@@ -10,16 +10,19 @@ public class GameManager : MonoBehaviour
     public GameModeEnum GameMode;
     public GameObject Key;
     public GameObject Doors;
+    public GameObject EnemyGravestone;
+    public GameObject PlayerGravestone;
     public bool IsKeyAchieved;
     public bool AreDoorsAchieved;
+    List<GameObject> gravestones;
     // Start is called before the first frame update
+    private void Awake()
+    {
+        
+    }
     void Start()
     {
-        setObjects();
-    }
-
-    private void setObjects()
-    {
+        gravestones = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -96,8 +99,14 @@ public class GameManager : MonoBehaviour
         {
             enemy.SetActive(true);
         }
+        foreach(var gravestone in gravestones)
+        {
+            Destroy(gravestone);
+        }
+        gravestones.Clear();
         Key.gameObject.SetActive(false);
         Doors.gameObject.SetActive(false);
+        MainManager.PlayerManager.gameObject.SetActive(true);
     }
 
     private void setDefaultPositionsForObjects()
@@ -152,5 +161,13 @@ public class GameManager : MonoBehaviour
             enemy.GetComponent<EnemyManager>().MoveSpeed = MainManager.MainEnemyManager.DefaultEnemySpeed;
             enemy.GetComponent<Animator>().enabled = true;
         }
+    }
+    public void ShowEnemyGravestone(Vector2 location)
+    {
+        gravestones.Add(Instantiate(EnemyGravestone, new Vector3(location.x, location.y, 0), EnemyGravestone.transform.rotation));
+    }
+    public void ShowPlayerGravestone(Vector2 location)
+    {
+        gravestones.Add(Instantiate(PlayerGravestone, new Vector3(location.x, location.y, 0), PlayerGravestone.transform.rotation));
     }
 }

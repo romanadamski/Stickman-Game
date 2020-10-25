@@ -14,10 +14,13 @@ public class CanvasManager : MonoBehaviour
     GameObject WinGamePanel;
 
     public GameObject KeyImage;
+    private void Awake()
+    {
+        getObjects();
+    }
     // Start is called before the first frame update
     void Start()
     {
-        getObjects();
         SetMenuActive();
         SetItemsOnScreen();
     }
@@ -58,7 +61,9 @@ public class CanvasManager : MonoBehaviour
         PausePanel.SetActive(false);
         GameOverPanel.SetActive(false);
         WinGamePanel.SetActive(false);
-        if (MainManager.GameManager.GameMode == Assets.GameModeEnum.MAIN_MENU || MainManager.GameManager.GameMode == Assets.GameModeEnum.GAME_OVER)
+        if (MainManager.GameManager.GameMode == Assets.GameModeEnum.MAIN_MENU 
+            || MainManager.GameManager.GameMode == Assets.GameModeEnum.GAME_OVER
+            || MainManager.GameManager.GameMode == Assets.GameModeEnum.WIN_GAME)
         {
             MainManager.GameManager.StartGame();
         }

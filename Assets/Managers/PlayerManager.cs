@@ -14,7 +14,7 @@ public class PlayerManager : MonoBehaviour {
     public bool grounded;
     public int maxJumps;
     private int jumps;
-    public GameObject Bullet;
+    public GameObject Axe;
     Quaternion turnRight;
     Quaternion turnLeft;
     float playerWidth;
@@ -49,6 +49,8 @@ public class PlayerManager : MonoBehaviour {
     }
     void gameOver()
     {
+        MainManager.GameManager.ShowPlayerGravestone(gameObject.transform.localPosition);
+        gameObject.SetActive(false);
         MainManager.CanvasManager.SetGameOverActive();
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -74,6 +76,7 @@ public class PlayerManager : MonoBehaviour {
         GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         animator.enabled = true;
     }
+
     // Update is called once per frame
     void Update() {
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, WhatIsGround);
@@ -110,12 +113,12 @@ public class PlayerManager : MonoBehaviour {
     }
     private void Shoot()
     {
-        GameObject bulletPrefab;
+        GameObject axetPrefab;
         if (transform.rotation.eulerAngles.y == 0)
-            bulletPrefab = Instantiate(Bullet, new Vector3(transform.position.x + playerWidth, transform.position.y, 0), transform.rotation);
+            axetPrefab = Instantiate(Axe, new Vector3(transform.position.x + playerWidth, transform.position.y, 0), transform.rotation);
         else
-            bulletPrefab = Instantiate(Bullet, new Vector3(transform.position.x - playerWidth, transform.position.y, 0), transform.rotation);
-        Physics2D.IgnoreCollision(bulletPrefab.GetComponent<BoxCollider2D>(), GetComponent<PolygonCollider2D>());
+            axetPrefab = Instantiate(Axe, new Vector3(transform.position.x - playerWidth, transform.position.y, 0), transform.rotation);
+        Physics2D.IgnoreCollision(axetPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>());
     }
 
     private void Jump()

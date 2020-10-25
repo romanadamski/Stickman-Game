@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - Axe
+  - EnemyGravestone
   layers:
   - Default
   - TransparentFX
@@ -16,10 +18,10 @@ TagManager:
   - 
   - 
   - Ground
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyGravestone
+  - Axe
+  - Player
   - 
   - 
   - 

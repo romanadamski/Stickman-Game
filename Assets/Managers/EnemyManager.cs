@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
@@ -32,7 +33,18 @@ public class EnemyManager : MonoBehaviour
         DefaultEnemyPosition = transform.localPosition;
         SetDirections();
     }
-    //todo zatrzymuje sie
+    void FixedUpdate()
+    {
+        if (MainManager.GameManager.GameMode != Assets.GameModeEnum.GAME)
+            return;
+        Destroy(GetComponent<PolygonCollider2D>());
+        gameObject.AddComponent<PolygonCollider2D>();
+        if (rigidbody2d.velocity.magnitude < .01)
+        {
+            rigidbody2d.velocity = Vector3.zero;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -46,13 +58,20 @@ public class EnemyManager : MonoBehaviour
             transform.rotation = turnLeft;
             direction = -1;
         }
-        rigidbody2d.velocity = new Vector2(MoveSpeed * direction, rigidbody2d.velocity.y);
+
+        rigidbody2d.velocity = new Vector2(MoveSpeed * direction, 0);
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Bullet"))
+        if (collision.gameObject.tag.Equals("Axe"))
         {
-            gameObject.SetActive(false);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        MainManager.GameManager.ShowEnemyGravestone(gameObject.transform.localPosition);
+        gameObject.SetActive(false);
     }
 }

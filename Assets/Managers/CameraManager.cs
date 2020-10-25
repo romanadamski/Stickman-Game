@@ -6,19 +6,18 @@ public class CameraManager : MonoBehaviour {
 
     public GameObject Player;
     private Vector3 Offset;
-
-    void Start()
+    private void Awake()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
+    }
+    void Start()
+    {
         Offset = transform.position - Player.transform.position;
+        Offset.y -= 1.5f;
     }
 
     void LateUpdate()
     {
-        if (Player != null)
-        {
-            transform.position = Player.transform.position + Offset;
-            transform.position = new Vector3(Player.transform.position.x, transform.position.y, transform.position.z);
-        }
+        transform.position = Player.transform.position + Offset;
     }
 }

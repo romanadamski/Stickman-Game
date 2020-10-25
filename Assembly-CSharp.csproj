@@ -64,7 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\GameModeEnum.cs" />
-    <Compile Include="Assets\Managers\BulletManager.cs" />
+    <Compile Include="Assets\Managers\AxeManager.cs" />
     <Compile Include="Assets\Managers\CameraManager.cs" />
     <Compile Include="Assets\Managers\CanvasManager.cs" />
     <Compile Include="Assets\Managers\DoorsManager.cs" />
