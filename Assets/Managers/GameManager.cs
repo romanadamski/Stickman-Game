@@ -28,7 +28,17 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(GameMode == GameModeEnum.GAME)
+            {
+                MainManager.CanvasManager.SetPauseActive();
+            }
+            else if (GameMode == GameModeEnum.PAUSE)
+            {
+                MainManager.CanvasManager.SetGameActive();
+            }
+        }
     }
     public void StartGame()
     {
@@ -90,6 +100,7 @@ public class GameManager : MonoBehaviour
         setObjectsVisiblity();
         setDefaultPositionsForObjects();
         MainManager.MainEnemyManager.IgnoreEnemies();
+        MainManager.ElevatorManager.StopAllCoroutines();
         startMovingObjects();
     }
 

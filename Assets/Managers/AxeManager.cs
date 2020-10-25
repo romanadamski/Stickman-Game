@@ -29,15 +29,15 @@ public class AxeManager : MonoBehaviour
     void Update()
     {
         if (transform.rotation.eulerAngles.y == 0)
-        {
             direction = 1;
-        }
         else if (transform.rotation.eulerAngles.y == 180)
             direction = -1;
+
         if (direction == 1 && startPosition.x + MaxDistance * direction < gameObject.transform.localPosition.x)
             Destroy(gameObject);
         else if (direction == -1 && startPosition.x + MaxDistance * direction > gameObject.transform.localPosition.x)
             Destroy(gameObject);
+
         rigidbody2d.velocity = new Vector2(moveSpeed * direction, rigidbody2d.velocity.y);
         transform.Rotate(Vector3.forward * -rotateSpeed);
     }

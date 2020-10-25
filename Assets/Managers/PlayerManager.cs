@@ -20,7 +20,6 @@ public class PlayerManager : MonoBehaviour {
     float playerWidth;
     float underPlatformsPosition = -6f;
     public Vector2 DefaultPlayerPosition;
-
     void Start() {
         animator = GetComponent<Animator>();
         rigidbody2d = GetComponent<Rigidbody2D>();
@@ -79,9 +78,11 @@ public class PlayerManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, WhatIsGround);
+        grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, WhatIsGround) ;
         if (grounded)
+        {
             jumps = maxJumps;
+        }
         animator.SetFloat("Speed", Mathf.Abs(rigidbody2d.velocity.x));
         animator.SetBool("Grounded", grounded);
 
@@ -125,8 +126,8 @@ public class PlayerManager : MonoBehaviour {
     {
         if (jumps > 0)
         {
-            rigidbody2d.velocity = new Vector2(0, jumpHeight);
             grounded = false;
+            rigidbody2d.velocity = new Vector2(0, jumpHeight);
             jumps = jumps - 1;
         }
         if (jumps == 0)
