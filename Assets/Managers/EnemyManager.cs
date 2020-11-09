@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
+using Assets.Enums;
 
 public class EnemyManager : MonoBehaviour
 {
@@ -13,6 +15,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject EndEnemyPosition;
     public Vector2 DefaultEnemyPosition;
     int direction = 1;
+    public EnemyStateEnum EnemyStateEnum;
     void SetDirections()
     {
         turnRight = transform.rotation;
@@ -32,6 +35,7 @@ public class EnemyManager : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
         DefaultEnemyPosition = transform.localPosition;
         SetDirections();
+        EnemyStateEnum = EnemyStateEnum.ALIVE;
     }
     void FixedUpdate()
     {
@@ -44,7 +48,6 @@ public class EnemyManager : MonoBehaviour
             rigidbody2d.velocity = Vector3.zero;
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -73,5 +76,6 @@ public class EnemyManager : MonoBehaviour
     {
         MainManager.GameManager.ShowEnemyGravestone(gameObject.transform.localPosition);
         gameObject.SetActive(false);
+        EnemyStateEnum = EnemyStateEnum.DEAD;
     }
 }

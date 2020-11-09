@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +11,14 @@ public class AxeManager : MonoBehaviour
     Vector2 startPosition;
     int direction = 1;
     public int MaxDistance;
+    public AxeTypeEnum AxeTypeEnum;
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         startPosition = gameObject.transform.localPosition;
         SetDirections();
+        transform.parent = MainManager.GameManager.AxeStore.transform;
     }
     void SetDirections()
     {
@@ -37,11 +40,17 @@ public class AxeManager : MonoBehaviour
             Destroy(gameObject);
 
         rigidbody2d.velocity = new Vector2(moveSpeed * direction, rigidbody2d.velocity.y);
-        transform.Rotate(Vector3.forward * -rotateSpeed);
+        Rotate();
     }
+
+    private void Rotate()
+    {
+        if(rigidbody2d.bodyType == RigidbodyType2D.Dynamic)
+            transform.Rotate(Vector3.forward * -rotateSpeed);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("Player"))
-            Destroy(gameObject);
+        Destroy(gameObject);
     }
 }

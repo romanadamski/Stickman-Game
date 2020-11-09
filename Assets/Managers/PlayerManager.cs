@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour {
     Quaternion turnRight;
     Quaternion turnLeft;
     float playerWidth;
-    readonly float underPlatformsPosition = -6f;
+    public float underPlatformsPosition = -6f;
     public Vector2 DefaultPlayerPosition;
     void Start() {
         animator = GetComponent<Animator>();
@@ -54,11 +54,16 @@ public class PlayerManager : MonoBehaviour {
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (ckeckCollisionWithEnemies(collision))
         {
             GameOver();
         }
-        grounded = true;
+    }
+    bool ckeckCollisionWithEnemies(Collision2D collision)
+    {
+        return
+            collision.gameObject.CompareTag("Enemy")
+            || collision.gameObject.CompareTag("AxeEnemy");
     }
     public void ResetRotationAndPosition()
     {
@@ -121,19 +126,16 @@ public class PlayerManager : MonoBehaviour {
     }
     private void Shoot()
     {
-        GameObject axetPrefab;
         if (transform.rotation.eulerAngles.y == 0)
-            axetPrefab = Instantiate(Axe, new Vector3(transform.position.x + playerWidth, transform.position.y, 0), transform.rotation);
+            Instantiate(Axe, new Vector3(transform.position.x + playerWidth, transform.position.y, 0), transform.rotation);
         else
-            axetPrefab = Instantiate(Axe, new Vector3(transform.position.x - playerWidth, transform.position.y, 0), transform.rotation);
-        Physics2D.IgnoreCollision(axetPrefab.GetComponent<PolygonCollider2D>(), GetComponent<PolygonCollider2D>());
+            Instantiate(Axe, new Vector3(transform.position.x - playerWidth, transform.position.y, 0), transform.rotation);
     }
 
     private void Jump()
     {
         if (jumps > 0)
         {
-            Debug.Log(jumps);
             grounded = false;
             rigidbody2d.velocity = new Vector2(0, jumpHeight);
             StartCoroutine(DecreaseJumpsAfterDelay());

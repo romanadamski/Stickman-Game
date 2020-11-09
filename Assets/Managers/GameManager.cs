@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject Doors;
     public GameObject EnemyGravestone;
     public GameObject PlayerGravestone;
+    public GameObject AxeStore;
     public bool IsKeyAchieved;
     public bool AreDoorsAchieved;
     List<GameObject> gravestones;
@@ -22,9 +24,16 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        GameMode = GameModeEnum.MAIN_MENU;
         gravestones = new List<GameObject>();
     }
-
+    void StopAxes()
+    {
+        foreach(var axe in AxeStore.GetComponentsInChildren<AxeManager>())
+        {
+            axe.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+        }
+    }
     // Update is called once per frame
     void Update()
     {
@@ -53,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     private void StartCoroutines()
     {
+        MainManager.MainEnemyManager.StartRandomShoting();
         StartCoroutine(WaitForAllEnemiesKilled());
         StartCoroutine(WaitForKeyToGet());
         StartCoroutine(WaitForDoorsToGet());
@@ -99,9 +109,23 @@ public class GameManager : MonoBehaviour
     {
         SetObjectsVisiblity();
         SetDefaultPositionsForObjects();
-        MainManager.MainEnemyManager.IgnoreEnemies();
         MainManager.ElevatorManager.StopAllCoroutines();
         StartMovingObjects();
+        DestroyAxes();
+    }
+    private void ResumeAxes()
+    {
+        foreach (var axe in AxeStore.GetComponentsInChildren<AxeManager>())
+        {
+            axe.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        }
+    }
+    private void DestroyAxes()
+    {
+        foreach (var axe in AxeStore.GetComponentsInChildren<AxeManager>())
+        {
+            Destroy(axe.gameObject);
+        }
     }
 
     private void SetObjectsVisiblity()
@@ -127,6 +151,7 @@ public class GameManager : MonoBehaviour
         foreach (var enemy in MainManager.MainEnemyManager.Enemies)
         {
             enemy.GetComponent<EnemyManager>().ResetRotationAndPosition();
+            enemy.GetComponent<EnemyManager>().EnemyStateEnum = Assets.Enums.EnemyStateEnum.ALIVE;
             enemy.GetComponent<Animator>().enabled = true;
         }
     }
@@ -154,6 +179,7 @@ public class GameManager : MonoBehaviour
             enemy.GetComponent<EnemyManager>().MoveSpeed = 0;
             enemy.GetComponent<Animator>().enabled = false;
         }
+        StopAxes();
     }
 
     public void ResumeGame()
@@ -172,6 +198,7 @@ public class GameManager : MonoBehaviour
             enemy.GetComponent<EnemyManager>().MoveSpeed = MainManager.MainEnemyManager.DefaultEnemySpeed;
             enemy.GetComponent<Animator>().enabled = true;
         }
+        ResumeAxes();
     }
     public void ShowEnemyGravestone(Vector2 location)
     {

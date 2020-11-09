@@ -45,6 +45,7 @@ public class CanvasManager : MonoBehaviour
     {
         
     }
+    
     public void SetMenuActive()
     {
         MenuPanel.SetActive(true);
@@ -54,6 +55,7 @@ public class CanvasManager : MonoBehaviour
         WinGamePanel.SetActive(false);
         MainManager.GameManager.GoToMainMenu();
     }
+
     public void SetGameActive()
     {
         MenuPanel.SetActive(false);
@@ -67,7 +69,7 @@ public class CanvasManager : MonoBehaviour
         {
             MainManager.GameManager.StartGame();
         }
-        else if(MainManager.GameManager.GameMode== Assets.GameModeEnum.PAUSE)
+        else if(MainManager.GameManager.GameMode == Assets.GameModeEnum.PAUSE)
         {
             MainManager.GameManager.ResumeGame();
         }

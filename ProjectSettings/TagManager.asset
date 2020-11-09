@@ -9,6 +9,7 @@ TagManager:
   - Axe
   - EnemyGravestone
   - Ground
+  - AxeEnemy
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - Axe
   - Player
   - GroundForPlayerOnly
-  - 
+  - AxeEnemy
   - 
   - 
   - 
